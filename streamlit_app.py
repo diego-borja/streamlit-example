@@ -9,37 +9,38 @@ import openai
 
 Prueba ChatGPT en esta aplicación
 """
-# Configuración de la clave API de OpenAI utilizando los secretos de Streamlit
-openai.api_key = st.secrets["openai"]["secret_key"]
-
-# Función para interactuar con GPT-3.5
-def chat_with_gpt(prompt, model="text-davinci-003", max_tokens=128):
+def get_response(prompt):
+    openai.api_key = st.secrets["openai"]["secret_key"]
     response = openai.Completion.create(
-        engine=model,
+        engine="text-davinci-003",  # Puedes cambiar al modelo que prefieras
         prompt=prompt,
-        max_tokens=max_tokens,
-        temperature=0.7
+        max_tokens=150
     )
     return response.choices[0].text.strip()
 
-# Interfaz de usuario de Streamlit
 def main():
-    st.title("ChatGPT-3.5 con Streamlit")
+    st.title("Chatbot con Streamlit y OpenAI")
 
-    # Campo de entrada de texto para el prompt
-    prompt = st.text_input("Digita aquí tu prompt", "")
+    # Usando el estado de sesión de Streamlit para mantener la conversación
+    if 'history' not in st.session_state:
+        st.session_state.history = []
 
-    # Botón para enviar el prompt
+    user_input = st.text_input("Escribe tu mensaje aquí")
+
     if st.button("Enviar"):
-        if prompt:
-            with st.spinner('Generando respuesta...'):
-                respuesta = chat_with_gpt(prompt)
-                st.text_area("Respuesta:", respuesta, height=150)
+        st.session_state.history.append({"message": user_input, "is_user": True})
+        response = get_response(user_input)
+        st.session_state.history.append({"message": response, "is_user": False})
+
+    for chat in st.session_state.history:
+        if chat["is_user"]:
+            st.chat_message(chat["message"], is_user=True)
         else:
-            st.error("Por favor, ingresa un prompt.")
+            st.chat_message(chat["message"])
 
 if __name__ == "__main__":
     main()
+
 
 
 
