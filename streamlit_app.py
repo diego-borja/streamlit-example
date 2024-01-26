@@ -9,12 +9,14 @@ import openai
 
 Prueba ChatGPT en esta aplicación
 """
-# Función para interactuar con ChatGPT-4 Turbo
-# Usa los secretos de Streamlit para obtener la clave API
+import streamlit as st
+import openai
+
+# Configuración de la clave API de OpenAI utilizando los secretos de Streamlit
 openai.api_key = st.secrets["openai"]["secret_key"]
 
-def chat_with_gpt(prompt, model="gpt-3.5-turbo", max_tokens=128):
-
+# Función para interactuar con ChatGPT-4 Turbo
+def chat_with_gpt(prompt, model="gpt-4-turbo", max_tokens=128):
     response = openai.ChatCompletion.create(
         model=model,
         messages=[
@@ -29,7 +31,7 @@ def chat_with_gpt(prompt, model="gpt-3.5-turbo", max_tokens=128):
 def main():
     st.title("ChatGPT-4 Turbo con Streamlit")
 
-    # Campo de entrada de texto
+    # Campo de entrada de texto para el prompt
     prompt = st.text_input("Digita aquí tu prompt", "")
 
     # Botón para enviar el prompt
@@ -43,6 +45,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
 num_turns = st.slider("Number of turns in spiral", 1, 300, 31)
