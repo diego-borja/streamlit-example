@@ -10,8 +10,10 @@ import openai
 Prueba ChatGPT en esta aplicación
 """
 # Función para interactuar con ChatGPT-4 Turbo
+# Usa los secretos de Streamlit para obtener la clave API
+openai.api_key = st.secrets["openai"]["secret_key"]
+
 def chat_with_gpt(prompt, model="gpt-3.5-turbo", max_tokens=128):
-    openai.api_key = "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"
 
     response = openai.ChatCompletion.create(
         model=model,
