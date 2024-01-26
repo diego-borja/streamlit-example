@@ -11,7 +11,7 @@ Prueba ChatGPT en esta aplicación
 """
 # Función para interactuar con ChatGPT-4 Turbo
 def chat_with_gpt(prompt, model="gpt-4-turbo", max_tokens=128):
-    openai.api_key = "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"
+    openai.api_key = "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"
 
     response = openai.ChatCompletion.create(
         model=model,
